@@ -11,7 +11,7 @@ export interface IPluginOptions {
   graphQLQuery: string;
 }
 
-export const createJsonFiles = (graphql: any, publicPath: string, pluginOptions: IPluginOptions) => {
+export const createJsonFiles = async (graphql: any, publicPath: string, pluginOptions: IPluginOptions) => {
   console.log("Creating JSON files for matching static HTML files");
 
   checkArgs({
@@ -31,13 +31,20 @@ export const createJsonFiles = (graphql: any, publicPath: string, pluginOptions:
 
   checkPluginOpts(pluginOptions, packageName);
 
-  const graphQLQueryStr = pluginOptions.graphQLQuery;
+  const graphQLQuery = pluginOptions.graphQLQuery;
+  const results = await graphql(graphQLQuery);
+
+  if (results.errors) {
+    console.log(results.errors);
+    throw new Error(`${packageName} had a problem getting results from GraphQL`);
+  }
 
   console.log({
-    graphQLQueryStr,
+    graphQLQuery,
     packageName,
     packageVersion,
     publicPath,
+    results,
     "typeof graphql": typeof graphql,
   });
 }
