@@ -37,7 +37,9 @@ plugins: [
   {
     resolve: `gatsby-plugin-json-output`,
     options: {
-      query: ``
+      graphQLQuery: "`allMarkdownRemark(limit: 1000) { \
+        edges { node { fields { path } } } \
+      }`"
     }
   }
 ]
