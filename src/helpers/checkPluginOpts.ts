@@ -1,13 +1,17 @@
 import { IPluginOptions } from "../index";
 
-const checkPluginOpts = (pluginOptions: IPluginOptions, packageName: string): boolean => {
+const checkPluginOpts = (pluginOptions: IPluginOptions): boolean => {
   
   if (typeof pluginOptions === "undefined") {
-    throw new Error(`\`${packageName}\` requires plugin options being provided in your \`gatsby-config.js\`. Please see the readme for the \`${packageName}\`.`)
+    throw new Error(`Plugin options should be provided in your \`gatsby-config.js\`.`)
   }
 
   if (typeof pluginOptions.graphQLQuery !== "string") {
-    throw new Error(`\`${packageName}\` requires \`pluginOptions.graphQLQuery\` to be a GraphQL query string. Please see the readme for the \`${packageName}\`.`)
+    throw new Error(`\`pluginOptions.graphQLQuery\` should be a GraphQL query string.`)
+  }
+
+  if (typeof pluginOptions.pathsMapper !== "function") {
+    throw new Error(`\`pluginOptions.pathsMapper\` should be a function of the correct shape.`)
   }
 
   return true;

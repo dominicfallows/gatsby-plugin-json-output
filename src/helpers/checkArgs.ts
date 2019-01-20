@@ -3,20 +3,19 @@ export interface ICheckArgs {
   propType: string;
   propValue: any;
   propNotEqualValue?: any;
-  packageName: string;
 }
 
 const checkArgs = (args: ICheckArgs): boolean => {
-  const { propKey, propType, propValue, propNotEqualValue, packageName } = args;
+  const { propKey, propType, propValue, propNotEqualValue } = args;
 
   let error: string | undefined;
 
   if (typeof propValue !== propType) {
-    error = `\`${packageName}\` requires you to pass \`${propKey}\` of type \`${propType}\`. You passed a type of \`${typeof propValue}\``;
+    error = `\`${propKey}\` should be of type \`${propType}\`. You passed a type of \`${typeof propValue}\`.`;
   }
 
   if (typeof propNotEqualValue !== "undefined" && propValue === propNotEqualValue) {
-    error = `\`${packageName}\` requires that \`${propKey}\` does not equal \`${propNotEqualValue}\``;
+    error = `\`${propKey}\` should not equal \`${propNotEqualValue}\`.`;
   }
 
   if (error) {
