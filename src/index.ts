@@ -1,19 +1,27 @@
 import * as packageJson from "../package.json";
 
 import checkArgs from "./helpers/checkArgs";
+import checkNodes from "./helpers/checkNodes";
 import checkPluginOpts from "./helpers/checkPluginOpts";
-import { stripSpacesNewLines } from "./helpers/strings";
+import { stripTrailingSlash } from "./helpers/strings";
+
+import createJsonFile from "./utils/createJsonFile";
 
 const packageName = (packageJson as any).name;
 const packageVersion = (packageJson as any).version;
 
+export interface ISerializedNode {
+  [key: string]: any
+}
+
 export interface IPluginOptions {
+  siteUrl: string;
   graphQLQuery: string;
-  pathsMapper: (data: any) => string[];
+  serialize: (results: any) => ISerializedNode[];
 }
 
 export const createJsonFiles = async (graphql: any, publicPath: string, pluginOptions: IPluginOptions) => {
-  console.log("Creating JSON files for matching static HTML files");
+  console.log("Creating JSON files for matching static HTML files.");
 
   try {
     checkArgs({
@@ -31,8 +39,9 @@ export const createJsonFiles = async (graphql: any, publicPath: string, pluginOp
 
     checkPluginOpts(pluginOptions);
 
-    const graphQLQuery = stripSpacesNewLines(pluginOptions.graphQLQuery);
-    const pathsMapper = pluginOptions.pathsMapper;
+    const siteUrl = stripTrailingSlash(pluginOptions.siteUrl);
+    const graphQLQuery = pluginOptions.graphQLQuery;
+    const serialize = pluginOptions.serialize;
     const results = await graphql(graphQLQuery);
 
     if (results.errors) {
@@ -40,27 +49,15 @@ export const createJsonFiles = async (graphql: any, publicPath: string, pluginOp
       throw new Error(`${packageName} had a problem getting results from GraphQL.`);
     }
 
-    const paths: string[] = pathsMapper(results);
+    const nodes: ISerializedNode[] = serialize(results);
 
-    if (!Array.isArray(paths)) {
-      throw new Error("The result of your provided `pathMapper' function is not an array of strings.");
-    }
+    checkNodes(nodes);
+    
+    nodes.map(
+      node => createJsonFile(siteUrl, publicPath, node)
+    );
 
-    if(paths.length === 0) {
-      throw new Error("`pathsMapper` has returned an empty array when processing your `graphQLQuery`.");
-    }
-
-    console.log({
-      graphQLQuery,
-      packageName,
-      packageVersion,
-      paths,
-      publicPath,
-      results,
-      "typeof graphql": typeof graphql,
-      "typeof paths": typeof paths,
-      "typeof pathsMapper": typeof pathsMapper
-    });
+    console.log("Finished creating JSON files for matching static HTML files.");
 
   } catch (err) {
     throw new Error(

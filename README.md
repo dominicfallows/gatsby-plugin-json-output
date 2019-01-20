@@ -37,22 +37,39 @@ plugins: [
   {
     resolve: `gatsby-plugin-json-output`,
     options: {
+      siteUrl: `https:\\example.com`,
       graphQLQuery: `
         {
           allMarkdownRemark(limit: 1000) {
             edges {
               node {
+                html
                 fields { path }
+                frontmatter {
+                  title
+                  created
+                  updated
+                }
               }
             }
           }
         }
       `,
-      pathsMapper: results => results.data.allMarkdownRemark.edges.map(edge => edge.node.fields.path)
+      serialize: results => results.data.allMarkdownRemark.edges.map(({ node }) => ({
+        path: node.fields.path, // MUST contain a path
+        title: node.frontmatter.title,
+        created: node.frontmatter.created,
+        updated: node.frontmatter.updated,
+        html: node.html,
+      }))
     }
   }
 ];
 ```
+
+### `siteUrl`
+
+This should be a string of your site's URL.
 
 ### `graphQLQuery`
 
@@ -80,26 +97,43 @@ For example, if I wanted to create a JSON file for each of the pages created usi
 
 The `fields { path }` object having been created by something like [gatsby-source-filesystem/#createfilepath](https://www.gatsbyjs.org/packages/gatsby-source-filesystem/#createfilepath).
 
-### `pathsMapper`
+### `serialize`
 
-This needs to be a function that can extract the `path` of each static HTML page, based on your `graphQLQuery`. This plugin will pass the results object of the `graphQLQuery` to your `pathMapper` function.
+This plugin uses this serialize function to structure the contents of the JSON files. You can use this function to restructure the nested nature of `graphQLQuery`. This plugin will pass the results object of the `graphQLQuery` to your `serialize` function.
 
-This function must return an array of strings (an array of the paths).
+This function must return an array of objects with any structure you'd like your JSON files to be.
+
+The only **required** field is `path` - which must be the relative path from the root of `public` (Gatsby's build output folder) of each static HTML file, like `/about` or `/blog/post-1` etc.
 
 For the example `graphQLQuery` above, you might provide a function like:
 
 ```javascript
 // Using arrow functions
-pathsMapper: results => results.data.allMarkdownRemark.edges.map(edge => edge.node.fields.path)
+serialize: results => results.data.allMarkdownRemark.edges.map(({ node }) => ({
+  path: node.fields.path, // MUST contain a path
+  title: node.frontmatter.title,
+  created: node.frontmatter.created,
+  updated: node.frontmatter.updated,
+  html: node.html,
+}))
 
 // Or traditional functions
-pathsMapper: function(results) {
-  var paths = [];
+serialize: function serialize(results) {
+  var nodes = [];
+  
   for(var i = 0; i < results.data.allMarkdownRemark.edges.length; i++) {
-    var edge = results.data.allMarkdownRemark.edges[i];
-    paths.push(edge.node.fields.path);
+    var node = results.data.allMarkdownRemark.edges[i].node;
+
+    nodes.push({
+      path: node.fields.path, // MUST contain a path
+      title: node.frontmatter.title,
+      created: node.frontmatter.created,
+      updated: node.frontmatter.updated,
+      html: node.html
+    });
+
+    return nodes;
   }
-  return paths;
 }
 ```
 
