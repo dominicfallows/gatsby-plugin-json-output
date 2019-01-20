@@ -8,7 +8,6 @@ import { stripTrailingSlash } from "./helpers/strings";
 import createJsonFile from "./utils/createJsonFile";
 
 const packageName = (packageJson as any).name;
-const packageVersion = (packageJson as any).version;
 
 export interface ISerializedNode {
   [key: string]: any
