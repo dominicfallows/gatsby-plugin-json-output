@@ -14,11 +14,11 @@ const createJsonFile = async (siteUrl: string, publicPath: string, node: ISerial
 
     const filePath = resolve(join(publicPath, node.path, "index.json"));
 
-    fs.writeFile(filePath, fileJson, (err) => {
+    fs.writeFile(filePath, fileJson, err => {
       if (err) {
         console.log(err);
         throw new Error(err.message);
-      };
+      }
 
       return;
     });

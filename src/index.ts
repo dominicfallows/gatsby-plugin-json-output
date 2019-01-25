@@ -10,7 +10,7 @@ import createJsonFile from "./utils/createJsonFile";
 const packageName = (packageJson as any).name;
 
 export interface ISerializedNode {
-  [key: string]: any
+  [key: string]: any;
 }
 
 export interface IPluginOptions {
@@ -51,13 +51,10 @@ export const createJsonFiles = async (graphql: any, publicPath: string, pluginOp
     const nodes: ISerializedNode[] = serialize(results);
 
     checkNodes(nodes);
-    
-    nodes.map(
-      node => createJsonFile(siteUrl, publicPath, node)
-    );
+
+    nodes.map(node => createJsonFile(siteUrl, publicPath, node));
 
     console.log("Finished creating JSON files for matching static HTML files.");
-
   } catch (err) {
     throw new Error(
       `${packageName} experienced an error, please see below for the error and the README for help.\n` + err
