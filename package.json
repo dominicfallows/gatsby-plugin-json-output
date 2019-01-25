@@ -33,7 +33,7 @@
     "lint": "tslint -p tsconfig.json",
     "test": "jest --config jestconfig.json",
     "prepare": "yarn build",
-    "prepublishOnly": "yarn lint",
+    "prepublishOnly": "yarn test && yarn lint",
     "preversion": "yarn lint",
     "version": "yarn format && git add -A",
     "postversion": "git push && git push --tags"
