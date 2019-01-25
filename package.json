@@ -1,8 +1,8 @@
 {
   "name": "gatsby-plugin-json-output",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Creates a JSON view of each generated static HTML file. For example: `/about/index.html` would also have a `/about/index.json`.",
-  "main": "lib/index.js",
+  "main": "index.js",
   "types": "lib/index.d.ts",
   "repository": {
     "type": "git",
@@ -33,7 +33,7 @@
     "lint": "tslint -p tsconfig.json",
     "test": "jest --config jestconfig.json",
     "prepare": "yarn build",
-    "prepublishOnly": "yarn test && yarn lint",
+    "prepublishOnly": "yarn lint",
     "preversion": "yarn lint",
     "version": "yarn format && git add -A",
     "postversion": "git push && git push --tags"
