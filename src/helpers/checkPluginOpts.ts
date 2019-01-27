@@ -9,7 +9,7 @@ const checkPluginOpts = (pluginOptions: IPluginOptions): boolean => {
     throw new Error(`\`pluginOptions.siteUrl\` should be a string of your site's URL.`);
   }
 
-  if (typeof pluginOptions.graphQLQuery !== "string") {
+  if (typeof pluginOptions.graphQLQuery !== "string" || pluginOptions.graphQLQuery === "") {
     throw new Error(`\`pluginOptions.graphQLQuery\` should be a GraphQL query string.`);
   }
 
