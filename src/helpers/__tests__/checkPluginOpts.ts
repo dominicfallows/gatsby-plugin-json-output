@@ -7,6 +7,10 @@ const mockPluginSettings: IPluginOptions = {
   siteUrl: "https://example.com"
 };
 
+test("checkPluginOpts accepts correct shape", () => {
+  expect(checkPluginOpts(mockPluginSettings)).toBe(true);
+})
+
 test("checkPluginOpts detects missing config", () => {
   expect(() => {
     checkPluginOpts(undefined as any);
@@ -45,13 +49,18 @@ test("checkPluginOpts detects missing or incorrect `graphQLQuery`", () => {
   }).toThrow(expectedErr);
 });
 
-/*
-const checkPluginOpts = (pluginOptions: IPluginOptions): boolean => {
+test("checkPluginOpts detects missing or incorrect `serialize`", () => {
+  const expectedErr = "`pluginOptions.serialize` should be a function of the correct structure.";
 
-  if (typeof pluginOptions.serialize !== "function") {
-    throw new Error(`\`pluginOptions.serialize\` should be a function of the correct structure.`);
-  }
+  expect(() => {
+    checkPluginOpts({ ...mockPluginSettings, serialize: undefined } as any);
+  }).toThrow(expectedErr);
 
-  return true;
-};
-*/
+  expect(() => {
+    checkPluginOpts({ ...mockPluginSettings, serialize: "" } as any);
+  }).toThrow(expectedErr);
+
+  expect(() => {
+    checkPluginOpts({ ...mockPluginSettings, serialize: 1234 } as any);
+  }).toThrow(expectedErr);
+});
