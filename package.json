@@ -1,7 +1,7 @@
 {
   "name": "gatsby-plugin-json-output",
   "version": "1.0.2",
-  "description": "Creates a JSON view of each generated static HTML file. For example: `/about/index.html` would also have a `/about/index.json`.",
+  "description": "Fetch JSON content from Gatsby with API-like static feeds that automatically update with your builds.",
   "main": "index.js",
   "types": "lib/index.d.ts",
   "repository": {
