@@ -1,9 +1,9 @@
-import fs from "fs";
+import { writeFile } from "fs";
 import { join, resolve } from "path";
 
 import { ISerializedNode } from "../index";
 
-const createJsonFile = async (siteUrl: string, publicPath: string, node: ISerializedNode): Promise<void> => {
+const createJsonFileAsync = async (siteUrl: string, publicPath: string, node: ISerializedNode): Promise<void> => {
   try {
     const fileObject = {
       $id: `${siteUrl}${join(node.path)}`,
@@ -14,17 +14,15 @@ const createJsonFile = async (siteUrl: string, publicPath: string, node: ISerial
 
     const filePath = resolve(join(publicPath, node.path, "index.json"));
 
-    fs.writeFile(filePath, fileJson, err => {
+    await writeFile(filePath, fileJson, err => {
       if (err) {
         console.log(err);
         throw new Error(err.message);
       }
-
-      return;
     });
   } catch (err) {
     throw new Error(err);
   }
 };
 
-export default createJsonFile;
+export default createJsonFileAsync;
