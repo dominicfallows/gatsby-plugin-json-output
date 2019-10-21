@@ -70,7 +70,7 @@ plugins: [
         title: siteTitle,
       },
       serializeFeed: results => results.data.allMarkdownRemark.edges.map(({ node }) => ({
-        id: nodes.field.path
+        id: nodes.field.path,
         url: siteUrl + node.fields.path,
         title: node.frontmatter.title,
         date_published: new Date(node.frontmatter.created).toISOString(),
