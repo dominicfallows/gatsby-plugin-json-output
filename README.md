@@ -31,11 +31,12 @@ Setup requires the following being added to your `gatsby-config.js` like below:
 
 ```javascript
 // gatsby-config.js
+const siteUrl = `https://example.com`
 plugins: [
   {
     resolve: `gatsby-plugin-json-output`,
     options: {
-      siteUrl: `https://example.com`,
+      siteUrl: siteUrl, // defined on top of plugins
       graphQLQuery: `
         {
           allMarkdownRemark(limit: 1000) {
@@ -70,7 +71,7 @@ plugins: [
         title: siteTitle,
       },
       serializeFeed: results => results.data.allMarkdownRemark.edges.map(({ node }) => ({
-        id: nodes.field.path,
+        id: node.fields.path,
         url: siteUrl + node.fields.path,
         title: node.frontmatter.title,
         date_published: new Date(node.frontmatter.created).toISOString(),
