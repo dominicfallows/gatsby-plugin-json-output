@@ -103,7 +103,7 @@ const createJsonFeedFiles = async ({
     }
 
     // create feed file promises
-    const feedPromises: Array<Promise<void>> = [];
+    const feedPromises: Promise<void>[] = [];
     nodeChunks.forEach((nodeChunk: ISerializedNode, i: number) => {
       feedPromises.push(
         new Promise((resolve, reject) => {
