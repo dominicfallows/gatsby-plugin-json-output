@@ -9,7 +9,7 @@ test("checkNodes detects missing or incorrect type of `nodes`", () => {
   const expectedErr = "The results of your `serialize' function is not an array of objects.";
 
   expect(() => {
-    checkNodes(undefined  as any);
+    checkNodes(undefined as any);
   }).toThrow(expectedErr);
 
   expect(() => {
@@ -29,8 +29,10 @@ test("checkNodes detects item with missing `path` in `nodes` array", () => {
   const expectedErr = "All nodes created by your `serialize` should contain a valid string `path` field.";
 
   expect(() => {
-    checkNodes([{
-      notPathKey: "/some/path"
-    }]);
+    checkNodes([
+      {
+        notPathKey: "/some/path"
+      }
+    ]);
   }).toThrow(expectedErr);
 });

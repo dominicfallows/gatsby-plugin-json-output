@@ -13,7 +13,7 @@ const checkPluginOpts = (pluginOptions: IPluginOptions): boolean => {
     throw new Error(`\`pluginOptions.graphQLQuery\` should be a GraphQL query string.`);
   }
 
-  if (typeof pluginOptions.serialize !== "undefined" && typeof pluginOptions.serialize !== "function" ) {
+  if (typeof pluginOptions.serialize !== "undefined" && typeof pluginOptions.serialize !== "function") {
     throw new Error(`\`pluginOptions.serialize\` should be a function of the correct structure.`);
   }
 

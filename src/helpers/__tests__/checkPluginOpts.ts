@@ -3,18 +3,18 @@ import checkPluginOpts from "../checkPluginOpts";
 
 const mockPluginSettings: IPluginOptions = {
   feedMeta: {
-    title: "Example Site",
+    title: "Example Site"
   },
   graphQLQuery: `{ query() {} }`,
   nodesPerFeedFile: 100,
   serialize: results => results.map((node: any) => node),
   serializeFeed: results => results.map((node: any) => node),
-  siteUrl: "https://example.com",
+  siteUrl: "https://example.com"
 };
 
 test("checkPluginOpts accepts correct shape", () => {
   expect(checkPluginOpts(mockPluginSettings)).toBe(true);
-})
+});
 
 test("checkPluginOpts detects missing config", () => {
   expect(() => {
