@@ -68,7 +68,7 @@ const createJsonFiles = async ({
   console.log("Creating individual JSON files from graphql query");
 
   try {
-    await Promise.all(nodes.map(node => createJsonFileAsync(siteUrl, publicPath, node)));
+    await Promise.all(nodes.map((node) => createJsonFileAsync(siteUrl, publicPath, node)));
     console.log("Finished creating individual JSON files from graphql query");
   } catch (err) {
     throw new Error(

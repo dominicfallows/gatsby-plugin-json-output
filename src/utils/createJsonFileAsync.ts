@@ -14,7 +14,7 @@ const createJsonFileAsync = async (siteUrl: string, publicPath: string, node: IS
 
     const filePath = resolve(join(publicPath, node.path, "index.json"));
 
-    await writeFile(filePath, fileJson, err => {
+    await writeFile(filePath, fileJson, (err) => {
       if (err) {
         console.log(err);
         throw new Error(err.message);
