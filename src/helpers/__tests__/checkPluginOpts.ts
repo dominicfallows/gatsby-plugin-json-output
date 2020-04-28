@@ -7,8 +7,8 @@ const mockPluginSettings: IPluginOptions = {
   },
   graphQLQuery: `{ query() {} }`,
   nodesPerFeedFile: 100,
-  serialize: results => results.map((node: any) => node),
-  serializeFeed: results => results.map((node: any) => node),
+  serialize: (results) => results.map((node: any) => node),
+  serializeFeed: (results) => results.map((node: any) => node),
   siteUrl: "https://example.com"
 };
 
