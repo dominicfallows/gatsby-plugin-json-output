@@ -22,7 +22,7 @@ export interface IPluginOptions {
   serialize?: (results: any) => ISerializedNode[];
   feedMeta?: { [key: string]: any };
   serializeFeed?: (results: any) => ISerializedNode[];
-  feedName: string;
+  feedName?: string;
   nodesPerFeedFile?: number;
 }
 
@@ -83,14 +83,14 @@ const createJsonFeedFiles = async ({
   siteUrl,
   nodes,
   nodesPerFeedFile = 100,
-  feedName,
+  feedName = 'feed',
   publicPath
 }: {
   feedMeta?: { [key: string]: any };
   siteUrl: string;
   nodes: ISerializedNode[];
   nodesPerFeedFile?: number;
-  feedName: string;
+  feedName?: string;
   publicPath: string;
 }) => {
   console.log("Creating JSON feed files from graphql query");

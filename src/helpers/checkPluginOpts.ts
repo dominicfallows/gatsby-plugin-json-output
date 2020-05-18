@@ -25,8 +25,8 @@ const checkPluginOpts = (pluginOptions: IPluginOptions): boolean => {
     throw new Error(`\`pluginOptions.serializeFeed\` should be a function of the correct structure.`);
   }
 
-  if (typeof pluginOptions.feedName !== "string" || pluginOptions.feedName === "") {
-    throw new Error(`\`pluginOptions.feedName\` should be a string that's used to name file and create file path.`);
+  if (typeof pluginOptions.feedName !== "undefined" && typeof pluginOptions.feedName !== "string") {
+    throw new Error(`\`pluginOptions.feedName\` should be a string used to name file and create file path.`);
   }
 
   if (typeof pluginOptions.nodesPerFeedFile !== "undefined" && typeof pluginOptions.nodesPerFeedFile !== "number") {
