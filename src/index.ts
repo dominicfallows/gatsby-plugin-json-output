@@ -22,7 +22,7 @@ export interface IPluginOptions {
   serialize?: (results: any) => ISerializedNode[];
   feedMeta?: { [key: string]: any };
   serializeFeed?: (results: any) => ISerializedNode[];
-  feedName?: string;
+  feedFilename?: string;
   nodesPerFeedFile?: number;
 }
 
@@ -83,14 +83,14 @@ const createJsonFeedFiles = async ({
   siteUrl,
   nodes,
   nodesPerFeedFile = 100,
-  feedName = 'feed',
+  feedFilename = 'feed',
   publicPath
 }: {
   feedMeta?: { [key: string]: any };
   siteUrl: string;
   nodes: ISerializedNode[];
   nodesPerFeedFile?: number;
-  feedName?: string;
+  feedFilename?: string;
   publicPath: string;
 }) => {
   console.log("Creating JSON feed files from graphql query");
@@ -113,14 +113,14 @@ const createJsonFeedFiles = async ({
           try {
             const jsonFeed = {
               ...feedMeta,
-              feed_url: `${siteUrl}/${feedName}-1.json`,
+              feed_url: `${siteUrl}/${feedFilename}-1.json`,
               home_page_url: siteUrl,
               items: nodeChunk,
-              next_feed_url: i < nodeChunks.length - 1 ? `${siteUrl}/${feedName}-${i + 2}.json` : null,
-              previous_feed_url: i > 0 ? `${siteUrl}/${feedName}-${i}.json` : null,
+              next_feed_url: i < nodeChunks.length - 1 ? `${siteUrl}/${feedFilename}-${i + 2}.json` : null,
+              previous_feed_url: i > 0 ? `${siteUrl}/${feedFilename}-${i}.json` : null,
               version: "https://jsonfeed.org/version/1"
             };
-            writeFileSync(join(publicPath, `${feedName}-${i + 1}.json`), JSON.stringify(jsonFeed), "utf8");
+            writeFileSync(join(publicPath, `${feedFilename}-${i + 1}.json`), JSON.stringify(jsonFeed), "utf8");
             resolve();
           } catch (err) {
             reject(err);
@@ -147,7 +147,7 @@ export const start = async (graphql: any, publicPath: string, pluginOptions: IPl
 
     // Run graphql query and serialise nodes
     const siteUrl = stripTrailingSlash(pluginOptions.siteUrl);
-    const { graphQLQuery, serialize, feedMeta, serializeFeed, feedName, nodesPerFeedFile } = pluginOptions;
+    const { graphQLQuery, serialize, feedMeta, serializeFeed, feedFilename, nodesPerFeedFile } = pluginOptions;
 
     if (!serialize && !serializeFeed) {
       console.log(`No \`serialize\` or \`serializeFeed\` functions passed to ${packageName}, nothing  to do.`);
@@ -172,7 +172,7 @@ export const start = async (graphql: any, publicPath: string, pluginOptions: IPl
     if (serializeFeed) {
       const nodesForFeed: ISerializedNode[] = serializeFeed(results);
       checkNodes(nodesForFeed, true);
-      await createJsonFeedFiles({ feedMeta, nodes: nodesForFeed, nodesPerFeedFile, feedName, siteUrl, publicPath });
+      await createJsonFeedFiles({ feedMeta, nodes: nodesForFeed, nodesPerFeedFile, feedFilename, siteUrl, publicPath });
     }
   } catch (err) {
     throw new Error(
