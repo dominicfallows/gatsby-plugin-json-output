@@ -78,6 +78,7 @@ plugins: [
         date_modified: new Date(node.frontmatter.updated).toISOString(),
         excerpt: node.excerpt,
       })),
+      feedFilename: "exampleFeedFilename",
       nodesPerFeedFile: 100,
     }
   }
@@ -172,9 +173,9 @@ feedMeta: {
 }
 ```
 
-### `serializeFeed` (optional
+### `serializeFeed` (optional)
 
-Include this if you want to create JSON feed files.
+Include this if you want to create JSON feed files. If you want to create multiple feed files, add multiple `gatsby-plugin-json-output` objects to `gatsby-config.js`, specify a name using the `feedFilename` field. This is useful if you want to provide feeds with different JSON structures or different data via GraphQL.
 
 This plugin uses this serializeFeed function to structure the contents of the JSON feed files. You can use this function to restructure the nested nature of `graphQLQuery`. This plugin will pass the results object of the `graphQLQuery` to your `serializeFeed` function.
 
@@ -223,6 +224,14 @@ You will find the feed files in the built assets starting from `public/feed-1.js
   "version": "https://jsonfeed.org/version/1"
 }
 ```
+
+### `feedFilename` (optional)
+
+Default name is `feed` followed by the page number. Example: `feed-1.json`.
+
+Use this option to set the name of the feed file. This is useful if you want to create multiple feed files for different JSON structures or different data via GraphQL.
+
+To create multiple feed files, you must add a `gatsby-plugin-json-output` object and options for each feed in `gatsby-config.js`.
 
 ### `nodesPerFeedFile` (optional)
 
