@@ -83,7 +83,7 @@ const createJsonFeedFiles = async ({
   siteUrl,
   nodes,
   nodesPerFeedFile = 100,
-  feedFilename = 'feed',
+  feedFilename = "feed",
   publicPath
 }: {
   feedMeta?: { [key: string]: any };
